@@ -14,7 +14,7 @@ from src.web.v1.services.ask_details import (
 
 @pytest.fixture
 def ask_details_service():
-    llm_provider, _, engine = init_providers()
+    llm_provider, _, _, engine = init_providers()
     return AskDetailsService(
         {
             "generation": generation.Generation(
@@ -70,7 +70,7 @@ def test_ask_details_with_successful_sql(ask_details_service: AskDetailsService)
 def test_ask_details_with_failed_sql(ask_details_service: AskDetailsService):
     # asking details
     query_id = str(uuid.uuid4())
-    sql = "SELECT * FROM xxx"
+    sql = 'SELECT * FROM "xxx"'
     summary = "This is a summary"
     ask_details_request = AskDetailsRequest(
         query="How many books are there?'",

@@ -24,7 +24,7 @@ import (
 
 const (
 	// please change the version when the version is updated
-	WREN_PRODUCT_VERSION        string = "0.6.0"
+	WREN_PRODUCT_VERSION        string = "0.7.0"
 	DOCKER_COMPOSE_YAML_URL     string = "https://raw.githubusercontent.com/Canner/WrenAI/" + WREN_PRODUCT_VERSION + "/docker/docker-compose.yaml"
 	DOCKER_COMPOSE_LLM_YAML_URL string = "https://raw.githubusercontent.com/Canner/WrenAI/" + WREN_PRODUCT_VERSION + "/docker/docker-compose.llm.yaml"
 	DOCKER_COMPOSE_ENV_URL      string = "https://raw.githubusercontent.com/Canner/WrenAI/" + WREN_PRODUCT_VERSION + "/docker/.env.example"
@@ -38,11 +38,18 @@ func replaceEnvFileContent(content string, projectDir string, openaiApiKey strin
 	reg := regexp.MustCompile(`PROJECT_DIR=(.*)`)
 	str := reg.ReplaceAllString(content, "PROJECT_DIR="+projectDir)
 
-	// replace OPENAI_API_KEY
-	reg = regexp.MustCompile(`OPENAI_API_KEY=(.*)`)
-	str = reg.ReplaceAllString(str, "OPENAI_API_KEY="+openaiApiKey)
+	// replace LLM_OPENAI_API_KEY
+	// Might be overwritten by the .env.ai file
+	reg = regexp.MustCompile(`LLM_OPENAI_API_KEY=(.*)`)
+	str = reg.ReplaceAllString(str, "LLM_OPENAI_API_KEY="+openaiApiKey)
+
+	// replace EMBEDDER_OPENAI_API_KEY,
+	// Might be overwritten by the .env.ai file
+	reg = regexp.MustCompile(`EMBEDDER_OPENAI_API_KEY=(.*)`)
+	str = reg.ReplaceAllString(str, "EMBEDDER_OPENAI_API_KEY="+openaiApiKey)
 
 	// replace GENERATION_MODEL
+	// Might be overwritten by the .env.ai file
 	reg = regexp.MustCompile(`GENERATION_MODEL=(.*)`)
 	str = reg.ReplaceAllString(str, "GENERATION_MODEL="+openAIGenerationModel)
 
@@ -241,6 +248,8 @@ func RunDockerCompose(projectName string, projectDir string, llmProvider string)
 	if llmProvider == "Custom" {
 		customEnvFile := path.Join(projectDir, ".env.ai")
 		llmComposeFile := path.Join(projectDir, "docker-compose.llm.yaml")
+		// Note: there are env variables with the same name in .env.ai and .env files
+		// Be aware of the order of the env files
 		envFiles = append(envFiles, customEnvFile)
 		configPaths = append(configPaths, llmComposeFile)
 	}

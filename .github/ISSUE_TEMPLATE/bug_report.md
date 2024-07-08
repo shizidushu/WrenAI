@@ -26,18 +26,20 @@ If applicable, add screenshots to help explain your problem.
 **Container Logs **
 You can execute the following command to get the logs of containers and provide them here:
 ```
-docker logs wrenai-wren-ui-1 >& wren-ui.log && \
-docker logs wrenai-wren-ai-service-1 >& wren-ai-service.log && \
-docker logs wrenai-wren-engine-1 >& wren-engine.log
-docker logs wrenai-ibis-server-1 >& wrenai-ibis-server-1.log
+docker logs wrenai-wren-ui-1 >& wrenai-wren-ui.log && \
+docker logs wrenai-wren-ai-service-1 >& wrenai-wren-ai-service.log && \
+docker logs wrenai-wren-engine-1 >& wrenai-wren-engine.log && \
+docker logs wrenai-ibis-server-1 >& wrenai-ibis-server.log
 ```
 
 **Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
+- OS: [e.g. iOS]
+- Browser [e.g. chrome, safari]
 
 **Wren AI Information**
 - Version: [e.g, 0.1.0]
+- LLM_PROVIDER= # openai_llm, azure_openai_llm, ollama_llm
+- GENERATION_MODEL= # gpt-3.5-turbo, llama3:70b, etc.
 
 **Additional context**
 Add any other context about the problem here.
